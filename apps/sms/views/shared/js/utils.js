@@ -296,9 +296,7 @@
         return false;
       }
 
-      if (Settings.supportEmailRecipient &&
-          Utils.isEmailAddress(a) &&
-          Utils.isEmailAddress(b)) {
+      if (Utils.isEmailAddress(a) && Utils.isEmailAddress(b)) {
         return a === b;
       }
 
@@ -631,13 +629,11 @@
         name: theTitle || number,
         number: number,
         type: type,
-        carrier: tel.carrier || ''
+        carrier: tel.carrier || '',
+        email: number,
+        emailHTML: ''
        };
 
-      if (Settings.supportEmailRecipient) {
-        data.email = number;
-        data.emailHTML = '';
-       }
       return data;
     },
 
@@ -715,10 +711,10 @@
      * calls when listening to user input (keypress) or browser events.
      * @params {function} func - The function that should be rate-limited
      * @params {number=300} delay - Min amount of time (ms) between two calls
-     * @params {Object} options - Parameters for managing edge calls. 
-     * Attention : when both preventFirstCall and preventLastCall are set to 
+     * @params {Object} options - Parameters for managing edge calls.
+     * Attention : when both preventFirstCall and preventLastCall are set to
      * true, `func` may never be called.
-     * @param {Boolean=false} options.preventFirstCall - Prevent first 
+     * @param {Boolean=false} options.preventFirstCall - Prevent first
      * call when true.
      * @param {Boolean=false} options.preventLastCall - Prevent last trailing
      * call when true.
@@ -727,7 +723,7 @@
      */
     throttle: function(func, delay = 300, options = {}) {
       var timeout = null;
-      var previous = 0;      
+      var previous = 0;
       var preventFirstCall = !!options.preventFirstCall;
       var preventLastCall = !!options.preventLastCall;
 

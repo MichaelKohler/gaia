@@ -1,7 +1,6 @@
 
 /*global ContactRenderer, loadBodyHTML, MockContact, MockL10n, MocksHelper,
          Utils, Template, MockContactPhotoHelper, SharedComponents,
-         MockSettings,
          AssetsHelper
 */
 
@@ -255,7 +254,6 @@ suite('ContactRenderer', function() {
     });
 
     test('Rendered Contact "email"', function() {
-      MockSettings.supportEmailRecipient = true;
       var html;
 
       contact.email[0].type = null;
@@ -272,7 +270,6 @@ suite('ContactRenderer', function() {
     });
 
     test('Rendered Contact highlighted "email"', function() {
-      MockSettings.supportEmailRecipient = true;
       var html;
 
       contact.email[0].type = null;
@@ -301,7 +298,6 @@ suite('ContactRenderer', function() {
     });
 
     test('Rendered Contact highlighted "name email"', function() {
-      MockSettings.supportEmailRecipient = true;
       var html;
 
       renderer.render({
@@ -349,22 +345,8 @@ suite('ContactRenderer', function() {
     });
 
     test('Rendered Contact w/ multiple: all (isSuggestion) ' +
-         'and No Support EmailRecipient ',
-      function() {
-      MockSettings.supportEmailRecipient = false;
-      renderer.render({
-        contact: contact,
-        input: '+12125559999',
-        target: ul
-      });
-
-      assert.equal(ul.children.length, 2);
-    });
-
-    test('Rendered Contact w/ multiple: all (isSuggestion) ' +
          'and Support EmailRecipient ',
       function() {
-      MockSettings.supportEmailRecipient = true;
       renderer.render({
         contact: contact,
         input: '+12125559999',
@@ -375,31 +357,8 @@ suite('ContactRenderer', function() {
     });
 
     test('Rendered Contact omit numbers already in recipient list ' +
-         'and No Support EmailRecipient ',
-      function() {
-      MockSettings.supportEmailRecipient = false;
-      var html;
-
-      var skip = ['+346578888888'];
-
-      // This contact has two tel entries.
-      renderer.render({
-        contact: contact,
-        input: '+346578888888',
-        target: ul,
-        skip: skip
-      });
-
-      html = ul.innerHTML;
-
-      assert.ok(!html.includes('346578888888'));
-      assert.equal(ul.children.length, 1);
-    });
-
-    test('Rendered Contact omit numbers already in recipient list ' +
          'and Support EmailRecipient ',
       function() {
-      MockSettings.supportEmailRecipient = true;
       var html;
 
       var skip = ['+346578888888'];
@@ -421,7 +380,6 @@ suite('ContactRenderer', function() {
     test('Rendered Contact omit emails already in recipient list ' +
          'and Support EmailRecipient ',
       function() {
-      MockSettings.supportEmailRecipient = true;
       var html;
 
       var skip = ['a@b.com'];
@@ -471,34 +429,9 @@ suite('ContactRenderer', function() {
       assert.equal(li.querySelector(selector).lastElementChild, block);
     });
 
-    test('Rendered no "Tel" and No Support EmailRecipient ', function() {
-
-      contact.tel = null;
-      MockSettings.supportEmailRecipient = false;
-      var result = renderer.render({
-        contact: contact,
-        input: 'foo',
-        target: ul
-      });
-      assert.isFalse(result);
-    });
-
-    test('Rendered no "email" and No Support EmailRecipient ', function() {
-
-      contact.email = null;
-      MockSettings.supportEmailRecipient = false;
-      var result = renderer.render({
-        contact: contact,
-        input: 'foo',
-        target: ul
-      });
-      assert.ok(result);
-    });
-
     test('Rendered no "Tel" and Support EmailRecipient ', function() {
 
       contact.tel = null;
-      MockSettings.supportEmailRecipient = true;
       var result = renderer.render({
         contact: contact,
         input: 'foo',
@@ -510,7 +443,6 @@ suite('ContactRenderer', function() {
     test('Rendered no "email" and Support EmailRecipient ', function() {
 
       contact.email = null;
-      MockSettings.supportEmailRecipient = true;
       var result = renderer.render({
         contact: contact,
         input: 'foo',
@@ -523,7 +455,6 @@ suite('ContactRenderer', function() {
 
       contact.tel = null;
       contact.email = null;
-      MockSettings.supportEmailRecipient = true;
       var result = renderer.render({
         contact: contact,
         input: 'foo',
@@ -793,7 +724,6 @@ suite('ContactRenderer', function() {
     });
 
     test('no tel number, has email address', function() {
-      MockSettings.supportEmailRecipient = true;
       var ul = document.createElement('ul');
       var contact = new MockContact();
       contact.tel = null;
@@ -809,7 +739,6 @@ suite('ContactRenderer', function() {
     });
 
     test('has tel number, no email address', function() {
-      MockSettings.supportEmailRecipient = true;
       var ul = document.createElement('ul');
       var contact = new MockContact();
       contact.email = null;
@@ -825,7 +754,6 @@ suite('ContactRenderer', function() {
     });
 
     test('no tel number, no email address', function() {
-      MockSettings.supportEmailRecipient = true;
       var ul = document.createElement('ul');
       var contact = new MockContact();
       contact.tel = null;
@@ -888,4 +816,3 @@ suite('ContactRenderer', function() {
     });
   });
 });
-

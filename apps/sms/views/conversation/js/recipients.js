@@ -1,5 +1,4 @@
-/*global GestureDetector, Navigation, SharedComponents, Utils,
-         Settings */
+/*global GestureDetector, Navigation, SharedComponents, Utils*/
 
 (function(exports) {
   'use strict';
@@ -29,8 +28,7 @@
     this.type = opts.type || '';
     this.carrier = opts.carrier || '';
     this.className = 'recipient';
-    this.isEmail = Settings.supportEmailRecipient &&
-                   Utils.isEmailAddress(this.number);
+    this.isEmail = Utils.isEmailAddress(this.number);
 
     // isLookupable
     //  the recipient was accepted by pressing <enter>

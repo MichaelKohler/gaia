@@ -1,8 +1,7 @@
 /*global MocksHelper, loadBodyHTML, MockL10n, InboxView,
          MessageManager, WaitingScreen, Threads, Template, MockMessages,
          MockThreadList, MockTimeHeaders, Draft, Drafts, Thread,
-         MockOptionMenu, Utils, Contacts, MockContact, Navigation,
-         MockSettings, Settings,
+         MockOptionMenu, Utils, Contacts, MockContact, Navigation, Settings,
          InterInstanceEventDispatcher,
          MockStickyHeader,
          StickyHeader
@@ -1848,8 +1847,6 @@ suite('thread_list_ui', function() {
     });
 
     test('[Email]display the picture of a contact', function(done) {
-      MockSettings.supportEmailRecipient = true;
-
       var contactInfo = MockContact.list();
       contactInfo[0].photo = [new Blob(['test'], { type: 'image/jpeg' })];
       Contacts.findByAddress.returns(Promise.resolve(contactInfo));
@@ -1871,7 +1868,6 @@ suite('thread_list_ui', function() {
 
     test('[Email]display correctly a contact without a picture',
     function(done) {
-      MockSettings.supportEmailRecipient = true;
       var contactInfo = MockContact.list();
       Contacts.findByAddress.returns(Promise.resolve(contactInfo));
 

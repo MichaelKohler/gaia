@@ -1,6 +1,5 @@
 /*global MockL10n, Utils, MockContact, FixturePhones, MockContactPhotoHelper,
-         MockMozPhoneNumberService, MocksHelper,
-         MockNotification, MockSettings,
+         MockMozPhoneNumberService, MocksHelper, MockNotification,
          AssetsHelper, Settings, Dialog
 */
 
@@ -1155,27 +1154,27 @@ suite('Utils', function() {
 
   suite('Utils.throttle', function() {
     setup(function() {
-      // Starting fake timers clock at Unix epoch (timestamp of 0) would 
-      // prevent Utils.throttle to work properly so init it to 1 
+      // Starting fake timers clock at Unix epoch (timestamp of 0) would
+      // prevent Utils.throttle to work properly so init it to 1
       this.sinon.useFakeTimers(1);
     });
 
     test('right typeof parameters', function() {
         assert.throw(
-          () => Utils.throttle(null), 
-          Error, 
+          () => Utils.throttle(null),
+          Error,
           'func must be a Function'
         );
-        
+
         assert.throw(
           () => Utils.throttle(() => {}, null),
-          Error, 
+          Error,
           'delay must be a positive number'
         );
-        
+
         assert.throw(
           () => Utils.throttle(() => {}, -1),
-          Error, 
+          Error,
           'delay must be a positive number'
         );
     });
@@ -1190,7 +1189,7 @@ suite('Utils', function() {
       };
 
       var throttlerFunc = Utils.throttle(func, 100);
-      
+
       throttlerFunc(dummyObjectA, dummyObjectB);
     });
 
@@ -1212,13 +1211,13 @@ suite('Utils', function() {
     test('preventing first call', function() {
       var delay = 100;
       var firstCallFuncToExecute = sinon.stub();
-      var firstCallThrottleFuncToExecute = 
+      var firstCallThrottleFuncToExecute =
         Utils.throttle(firstCallFuncToExecute, delay);
-      
+
       var notFirstCallFuncToExecute = sinon.stub();
-      var notFirstCallThrottleFuncToExecute = 
+      var notFirstCallThrottleFuncToExecute =
         Utils.throttle(
-          notFirstCallFuncToExecute, 
+          notFirstCallFuncToExecute,
           delay,
           {
             preventFirstCall: true
@@ -1239,8 +1238,8 @@ suite('Utils', function() {
       var lastCallStub = sinon.stub();
       var notLastCallStub = sinon.stub();
       var notLastCallFuncToExecute = Utils.throttle(
-        notLastCallStub, 
-        delay, 
+        notLastCallStub,
+        delay,
         {
           preventLastCall: true
         }
@@ -1250,7 +1249,7 @@ suite('Utils', function() {
       lastCallFuncToExecute();
       notLastCallFuncToExecute();
       this.sinon.clock.tick(delay);
-      
+
       lastCallFuncToExecute();
       notLastCallFuncToExecute();
       this.sinon.clock.tick(delay / 2);
@@ -1267,7 +1266,7 @@ suite('Utils', function() {
 
       stubOnceThrottler();
       this.sinon.clock.tick(delay - 1);
-      // Under delay these calls will be filtered 
+      // Under delay these calls will be filtered
       stubOnceThrottler();
       stubOnceThrottler();
       stubOnceThrottler();
@@ -1284,7 +1283,7 @@ suite('Utils', function() {
       // This one is called after the delay
       stubTwiceThrottler();
       this.sinon.clock.tick(delay);
-      // But then these calls are filtered 
+      // But then these calls are filtered
       stubTwiceThrottler();
       stubTwiceThrottler();
       sinon.assert.calledTwice(stubTwice);
@@ -1760,7 +1759,6 @@ suite('getDisplayObject', function() {
   });
 
   test('Tel object with title, type and value of email', function() {
-    MockSettings.supportEmailRecipient = true;
     var type = 'Personal';
     var myTitle = 'My title';
     var value = 'a@b.com';
@@ -1777,7 +1775,6 @@ suite('getDisplayObject', function() {
   });
 
   test('Tel object with title, NO type and value of email', function() {
-    MockSettings.supportEmailRecipient = true;
     var myTitle = 'My title';
     var value = 'a@b.com';
     var data = Utils.getDisplayObject(myTitle, {
@@ -1792,7 +1789,6 @@ suite('getDisplayObject', function() {
   });
 
   test('Tel object with NO title, type and value of email', function() {
-    MockSettings.supportEmailRecipient = true;
     var type = 'Personal';
     var value = 'a@b.com';
     var data = Utils.getDisplayObject(null, {

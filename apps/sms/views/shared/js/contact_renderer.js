@@ -1,4 +1,4 @@
-/*global SharedComponents, Template, Utils, Settings */
+/*global SharedComponents, Template, Utils*/
 
 'use strict';
 
@@ -183,7 +183,7 @@ ContactRenderer.prototype = {
     var hasTel = contact.tel && contact.tel.length;
     var hasEmail = contact.email && contact.email.length;
 
-    if (!hasTel && !(Settings.supportEmailRecipient && hasEmail)) {
+    if (!hasTel && !hasEmail) {
       return false;
     }
 
@@ -214,8 +214,7 @@ ContactRenderer.prototype = {
     if (contact.tel && contact.tel.length) {
       addresses = addresses.concat(contact.tel);
     }
-    if (Settings.supportEmailRecipient &&
-        contact.email && contact.email.length) {
+    if (contact.email && contact.email.length) {
       addresses = addresses.concat(contact.email);
     }
     var details = Utils.getContactDetails(
@@ -244,10 +243,7 @@ ContactRenderer.prototype = {
 
       var data = Utils.getDisplayObject(details.title, current);
 
-      var props = ['name', 'number'];
-      if (Settings.supportEmailRecipient) {
-        props.push('email');
-      }
+      var props = ['name', 'number', 'email'];
 
       props.forEach(function(key) {
         var escapedData = Template.escape(data[key]);

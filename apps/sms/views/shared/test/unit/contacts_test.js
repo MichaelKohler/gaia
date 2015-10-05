@@ -1,5 +1,4 @@
-/*global MockContact, Contacts, fb, MockFbReaderUtilsObj,
-         MockSettings, MocksHelper */
+/*global MockContact, Contacts, fb, MockFbReaderUtilsObj, MocksHelper */
 'use strict';
 
 require('/shared/test/unit/mocks/mock_moz_phone_number_service.js');
@@ -80,7 +79,6 @@ suite('Contacts', function(done) {
     });
 
     test('(string[tel,email,givenName,familyName], ...) Match', function(done) {
-      MockSettings.supportEmailRecipient = true;
       var result = MockContact.list();
 
       navigator.mozContacts.find.withArgs(
@@ -98,8 +96,6 @@ suite('Contacts', function(done) {
 
     test('(string[tel,email,givenName,familyName], ...) No Match',
            function(done) {
-      MockSettings.supportEmailRecipient = true;
-
       navigator.mozContacts.find.withArgs(
         withFilter('z@y.com')
       ).returns(
@@ -294,7 +290,6 @@ suite('Contacts', function(done) {
     });
 
     test('name first, part of email address last', function(done) {
-      MockSettings.supportEmailRecipient = true;
       var result = MockContact.list();
 
       navigator.mozContacts.find.withArgs(
@@ -311,7 +306,6 @@ suite('Contacts', function(done) {
     });
 
     test('part of email address first, name last', function(done) {
-      MockSettings.supportEmailRecipient = true;
       var result = MockContact.list();
 
       navigator.mozContacts.find.withArgs(

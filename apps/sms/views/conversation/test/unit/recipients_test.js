@@ -1,6 +1,5 @@
 /*global loadBodyHTML, Recipients, MocksHelper, CustomEvent, KeyEvent,
          Template, MockL10n, Navigation, SharedComponents,
-         MockSettings,
          KeyboardEvent,
          Utils
 */
@@ -188,7 +187,6 @@ suite('Recipients', function() {
     });
 
     test('recipients.add() email 1 ', function() {
-      MockSettings.supportEmailRecipient = true;
       var recipient;
 
       recipients.add(fixtureEmail);
@@ -229,7 +227,6 @@ suite('Recipients', function() {
     });
 
     test('recipients.remove(recipient) email ', function() {
-      MockSettings.supportEmailRecipient = true;
       var recipient;
 
       recipients.add(fixtureEmail);
@@ -245,7 +242,6 @@ suite('Recipients', function() {
     });
 
     test('recipients.remove(nonexistant) email ', function() {
-      MockSettings.supportEmailRecipient = true;
       recipients.add(fixtureEmail);
       recipients.remove(null);
       assert.equal(recipients.length, 1);
@@ -254,7 +250,6 @@ suite('Recipients', function() {
     });
 
     test('recipients.remove(index) email ', function() {
-      MockSettings.supportEmailRecipient = true;
       recipients.add(fixtureEmail);
       assert.equal(recipients.length, 1);
 

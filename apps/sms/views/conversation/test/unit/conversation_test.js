@@ -7,7 +7,7 @@
          InboxView, ContactRenderer, UIEvent, Drafts,
          ActivityPicker, MockNavigatorSettings, MockContactRenderer,
          Draft, MockStickyHeader, MultiSimActionButton, Promise,
-         MockLazyLoader, WaitingScreen, Navigation, MockSettings,
+         MockLazyLoader, WaitingScreen, Navigation,
          ActivityClient,
          App,
          AssetsHelper,
@@ -1302,8 +1302,6 @@ suite('conversation.js >', function() {
         });
 
         test('[Email]input value has matching record ', function() {
-
-          MockSettings.supportEmailRecipient = true;
           // TODO we need to filter properly inside contact search
           // results (bug 1084184)
           contacts[0].tel = [];
@@ -1322,9 +1320,6 @@ suite('conversation.js >', function() {
         });
 
         test('[Email]input value is invalid ', function(done) {
-
-          MockSettings.supportEmailRecipient = true;
-
           // An actual accepted recipient from contacts
           fixtureEmail.number = 'foo';
           fixtureEmail.isQuestionable = true;
@@ -1459,7 +1454,6 @@ suite('conversation.js >', function() {
         test('[Email]input value has multiple matching records, the ' +
               'first is a duplicate, use next (accept) ', function() {
 
-          MockSettings.supportEmailRecipient = true;
           contacts = MockContact.list([
             { givenName: ['Janet'], familyName: ['Jones'] },
             { givenName: ['Jane'], familyName: ['Johnson'] }
@@ -1510,7 +1504,6 @@ suite('conversation.js >', function() {
         test('[Email]input value has matching duplicate record w/ ' +
               'single, same tel record (invalid) ', function() {
 
-          MockSettings.supportEmailRecipient = true;
           // Make sure we have only one email
           contacts[0].email.length = 1;
           // in bug 1084184 we'll be able to filter using the fValue parameter.
@@ -3780,7 +3773,6 @@ suite('conversation.js >', function() {
       });
 
       test(' If there is one participant (email) & contacts', function() {
-        MockSettings.supportEmailRecipient = true;
         var thread = {
           participants: [email]
         };
@@ -3790,7 +3782,6 @@ suite('conversation.js >', function() {
       });
 
       test(' If there is one participant (email) & no contacts', function() {
-        MockSettings.supportEmailRecipient = true;
         var thread = {
           participants: [email]
         };
@@ -4373,8 +4364,6 @@ suite('conversation.js >', function() {
 
           test('Unknown recipient (email and support for email recipients)',
           function() {
-            MockSettings.supportEmailRecipient = true;
-
             this.sinon.spy(ActivityPicker, 'email');
             this.sinon.spy(ConversationView, 'initiateNewMessage');
             this.sinon.stub(MessageManager, 'findThreadFromNumber').withArgs(
@@ -4536,7 +4525,6 @@ suite('conversation.js >', function() {
           });
 
           test('Known recipient email', function(done) {
-            MockSettings.supportEmailRecipient = true;
             this.sinon.spy(ContactRenderer.prototype, 'render');
 
             setActiveThread(1, ['a@b.com']);
@@ -4565,8 +4553,6 @@ suite('conversation.js >', function() {
           });
 
           test('Unknown recipient email', function() {
-            MockSettings.supportEmailRecipient = true;
-
             setActiveThread(1, ['a@b']);
 
             headerText.dataset.isContact = false;
@@ -5428,23 +5414,13 @@ suite('conversation.js >', function() {
       });
     });
 
-    test('pick in the case of Settings.supportEmailRecipient = true',
+    test('pick properties',
     function() {
-      MockSettings.supportEmailRecipient = true;
       ConversationView.requestContact();
 
       var requestedProps = MockMozActivity.calls[0].data.contactProperties;
       assert.include(requestedProps, 'tel');
       assert.include(requestedProps, 'email');
-    });
-
-    test('pick in the case of Settings.supportEmailRecipient = false',
-    function() {
-      MockSettings.supportEmailRecipient = false;
-      ConversationView.requestContact();
-
-      var requestedProps = MockMozActivity.calls[0].data.contactProperties;
-      assert.include(requestedProps, 'tel');
     });
   });
 
@@ -6722,13 +6698,7 @@ suite('conversation.js >', function() {
           });
 
           test('forceType works correctly', function() {
-            // Returns null if email recipients are not supported.
-            Settings.supportEmailRecipient = false;
-            assert.isNull(composeLock.forceType());
-
-            // Returns null if email recipients are supported, but email
-            // recipients are not entered.
-            Settings.supportEmailRecipient = true;
+            // Returns null if email recipients are not entered.
             ConversationView.recipients.add({
               number: '888'
             });
@@ -6880,7 +6850,6 @@ suite('conversation.js >', function() {
               );
 
               ConversationView.callNumberButton.classList.add('hide');
-              Settings.supportEmailRecipient = true;
 
               setActiveThread(threadId, ['nobody@mozilla.com']);
               return ConversationView.beforeEnter(transitionArgs);
@@ -6926,7 +6895,6 @@ suite('conversation.js >', function() {
         });
 
         test('correctly setups Compose lock for email thread', function(done) {
-          Settings.supportEmailRecipient = true;
           setActiveThread(threadId, ['nobody@mozilla.com']);
           ConversationView.beforeEnter(transitionArgs).then(() => {
             assert.equal(Compose.setupLock.lastCall.args[0].forceType(), 'mms');

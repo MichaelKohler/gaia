@@ -2,7 +2,7 @@
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
 (function(exports) {
   'use strict';
-  /*global fb, Settings, Utils */
+  /*global fb, Utils */
   var unknownNumbers = [];
 
   var filterFns = {
@@ -183,10 +183,7 @@
 
         // Step 8
         if (terms.length > 1) {
-          var fields = ['tel', 'givenName', 'familyName'];
-          if (Settings.supportEmailRecipient) {
-            fields.push('email');
-          }
+          var fields = ['tel', 'givenName', 'familyName', 'email'];
           var criteria = { fields: fields, terms: lower };
 
           results = contacts.filter(
@@ -213,10 +210,7 @@
     },
 
     findContactByString: function contacts_findContactByString(filterValue) {
-      var props = ['tel', 'givenName', 'familyName'];
-      if (Settings.supportEmailRecipient) {
-        props.push('email');
-      }
+      var props = ['tel', 'givenName', 'familyName', 'email'];
       return this.findBy({
         filterBy: props,
         filterOp: 'contains',
@@ -293,7 +287,7 @@
     },
 
     findByAddress: function contacts_findByAddress(fValue) {
-      if (Settings.supportEmailRecipient && Utils.isEmailAddress(fValue)) {
+      if (Utils.isEmailAddress(fValue)) {
         return this.findExactByEmail(fValue);
       } else {
         return this.findByPhoneNumber(fValue);

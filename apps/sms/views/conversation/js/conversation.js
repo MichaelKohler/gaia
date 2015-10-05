@@ -416,10 +416,6 @@ var ConversationView = {
   },
 
   hasEmailRecipients() {
-    if (!Settings.supportEmailRecipient) {
-      return false;
-    }
-
     /**
      * When non-contact recipient is tapped by user, Recipients component
      * removes recipient pill, fires "remove" event and only then populates
@@ -593,7 +589,7 @@ var ConversationView = {
 
       var prevPanel = args.meta.prev;
 
-      var emailThread = Settings.supportEmailRecipient &&
+      var emailThread =
         this.activeThread.participants.some(Utils.isEmailAddress);
 
       Compose.setupLock({ forceType: () => emailThread ? 'mms' : null });
@@ -1042,9 +1038,7 @@ var ConversationView = {
     Recipients.View.isFocusable = false;
     var contactProperties = ['tel'];
 
-    if (Settings.supportEmailRecipient) {
-      contactProperties.push('email');
-    }
+    contactProperties.push('email');
 
     var activity = new MozActivity({
       name: 'pick',
@@ -1334,8 +1328,8 @@ var ConversationView = {
     // group message mode.
     if (thread.participants.length === 1 && contacts.length) {
 
-      address = Settings.supportEmailRecipient && Utils.isEmailAddress(number) ?
-                contacts[0].email : contacts[0].tel;
+      address =
+        Utils.isEmailAddress(number) ? contacts[0].email : contacts[0].tel;
 
       phoneDetails = Utils.getPhoneDetails(number, address);
 
@@ -2539,10 +2533,7 @@ var ConversationView = {
       index = 0;
     }
 
-    var props = ['tel'];
-    if (Settings.supportEmailRecipient) {
-      props.push('email');
-    }
+    var props = ['tel', 'email'];
 
     // If there is greater than zero matches,
     // process the first found contact into
@@ -2689,7 +2680,7 @@ var ConversationView = {
     var number = this.headerText.dataset.number;
 
     var tel, email;
-    if (Settings.supportEmailRecipient && Utils.isEmailAddress(number)) {
+    if (Utils.isEmailAddress(number)) {
       email = number;
     } else {
       tel = number;
@@ -2714,7 +2705,7 @@ var ConversationView = {
     var number = opts.number || '';
     var tel, email;
 
-    if (Settings.supportEmailRecipient && Utils.isEmailAddress(number)) {
+    if (Utils.isEmailAddress(number)) {
       email = number || '';
     } else {
       tel = number || '';
@@ -2792,17 +2783,16 @@ var ConversationView = {
         },
         params: [email]
       });
-      if (Settings.supportEmailRecipient) {
-        items.push({
-          l10nId: 'sendMMSToEmail',
-          method: () => {
-            this.initiateNewMessage({ number: email });
-          },
-          // As we change panel here, we don't want to call 'complete' that
-          // changes the panel as well
-          incomplete: true
-        });
-      }
+
+      items.push({
+        l10nId: 'sendMMSToEmail',
+        method: () => {
+          this.initiateNewMessage({ number: email });
+        },
+        // As we change panel here, we don't want to call 'complete' that
+        // changes the panel as well
+        incomplete: true
+      });
     } else {
       // Multi-participant activations or in-message numbers
       // will include a "Call" and "Send Message" options in the menu
