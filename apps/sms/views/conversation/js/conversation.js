@@ -1036,9 +1036,7 @@ var ConversationView = {
     // Ensure that Recipients does not trigger focus on
     // itself, which causes the keyboard to appear.
     Recipients.View.isFocusable = false;
-    var contactProperties = ['tel'];
-
-    contactProperties.push('email');
+    var contactProperties = ['tel', 'email'];
 
     var activity = new MozActivity({
       name: 'pick',
